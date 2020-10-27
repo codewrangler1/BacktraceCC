@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">BacktraceCC</string>
+    <string name="crash_in_cpp">Crash in CPP</string>
+    <string name="crash_in_kotlin">Crash in Kotlin</string>
+</resources>
