@@ -6,6 +6,8 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import backtraceio.library.BacktraceClient
 import backtraceio.library.BacktraceCredentials
+import backtraceio.library.BacktraceDatabase
+import backtraceio.library.models.BacktraceExceptionHandler
 import backtraceio.library.models.json.BacktraceReport
 
 class MainActivity : AppCompatActivity() {
@@ -28,7 +30,19 @@ class MainActivity : AppCompatActivity() {
             )
             backtraceClient = BacktraceClient(applicationContext, backtraceCredentials)
 
-            Thread.setDefaultUncaughtExceptionHandler(ReportHelper(this));
+
+            // This can be null, so...
+            BacktraceExceptionHandler.setCustomAttributes(null);
+
+            // setup backtrace DB
+            var btdb: BacktraceDatabase = BacktraceDatabase(this, "btdb")
+
+            // enable native integration
+            btdb.setupNativeIntegration(backtraceClient, backtraceCredentials)
+
+
+            // commented out...let backtrace handle it?
+            //Thread.setDefaultUncaughtExceptionHandler(ReportHelper(this));
 
         } catch (e: Exception) {
             Log.d(TAG, e.localizedMessage as String)
@@ -52,7 +66,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onClickCrashCpp(view: android.view.View) {
-        NativeBackTrace.CauseCrash()
+
+        Thread(Runnable {
+            NativeBackTrace.CauseCrash()
+        }).start()
+
     }
 
     class ReportHelper(mactivity: MainActivity) : Thread.UncaughtExceptionHandler {

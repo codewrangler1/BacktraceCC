@@ -22,6 +22,9 @@ extern "C" {
         // Find the Java class
         // jclass jniClass = env->FindClass("com/example/backtracecc/NativeBackTrace");
 
+        jclass jniClass = env->FindClass("java/lang/Throwable");
+        env->ThrowNew(jniClass, "Crash from NDK");
+
         // Find the Java method
         //jmethodID getCallBacktraceMethod = env->GetStaticMethodID(jniClass, "callBackTrace", "(Ljava/lang/Exception;)V");
 
