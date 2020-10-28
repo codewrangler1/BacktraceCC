@@ -33,9 +33,10 @@ class MainActivity : AppCompatActivity() {
 
             // This can be null, so...
             BacktraceExceptionHandler.setCustomAttributes(null);
+            BacktraceExceptionHandler.enable(backtraceClient)
 
             // setup backtrace DB
-            var btdb: BacktraceDatabase = BacktraceDatabase(this, "btdb")
+            val btdb: BacktraceDatabase = BacktraceDatabase(this, "btdb")
 
             // enable native integration
             btdb.setupNativeIntegration(backtraceClient, backtraceCredentials)
